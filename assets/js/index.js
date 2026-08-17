@@ -15,11 +15,18 @@ function openImage(key){
 }
 
 /* ---------------- Trivia data ----------------
-   Sistema: cada pregunta tiene 4 alternativas (A/B/C/D), cada letra
-   pertenece siempre a la misma categoría. Al final se cuenta qué
-   letra sumó más puntos y esa categoría define el resultado.
+   Motor genérico: cada pregunta tiene 4 alternativas (A/B/C/D).
+   Cada alternativa apunta a una "key" de categoría (data.categories).
+   En el quiz de estilos de aprendizaje la key es la misma en todas
+   las preguntas (A siempre = visual). En el quiz de inteligencias
+   múltiples la key cambia pregunta a pregunta según la tabla oficial.
+   Al final se cuentan las keys elegidas y gana la de mayor puntaje
+   (empates se resuelven por el orden de categoryOrder).
 ------------------------------------------------- */
+const LETTERS = ['A','B','C','D'];
+
 const quizzes = {
+  /* ---------------- QUIZ 1: Estilos de aprendizaje ---------------- */
   aprendizaje: {
     accentClass: '',
     icon: '🧠',
@@ -27,136 +34,167 @@ const quizzes = {
     subtitle: 'Trivia',
     intro: 'No hay respuestas correctas o incorrectas. Elige la alternativa que más se parezca a ti.',
     categories: {
-      A: { icon:'👀' },
-      B: { icon:'👂' },
-      C: { icon:'📖' },
-      D: { icon:'🤸' }
+      visual:   { icon:'👀', name:'Visual' },
+      auditiva: { icon:'👂', name:'Auditiva' },
+      lectura:  { icon:'📖', name:'Lectura/Escritura' },
+      practica: { icon:'🤸', name:'Práctica/Experiencial' },
     },
+    categoryOrder: ['visual','auditiva','lectura','practica'],
     questions: [
       { q:'Cuando tienes que aprender algo nuevo…', opts:{
-          A:'Prefiero ver imágenes, esquemas o videos.',
-          B:'Prefiero que alguien me lo explique.',
-          C:'Prefiero leer la información.',
-          D:'Prefiero probarlo y aprender mientras lo hago.' } },
+          A:{ text:'Prefiero ver imágenes, esquemas o videos.', key:'visual' },
+          B:{ text:'Prefiero que alguien me lo explique.', key:'auditiva' },
+          C:{ text:'Prefiero leer la información.', key:'lectura' },
+          D:{ text:'Prefiero probarlo y aprender mientras lo hago.', key:'practica' } } },
       { q:'Antes de una prueba importante, normalmente…', opts:{
-          A:'Hago mapas conceptuales, dibujos o esquemas.',
-          B:'Explico la materia en voz alta o escucho a alguien.',
-          C:'Leo y resumo mis apuntes.',
-          D:'Practico con ejercicios o ejemplos.' } },
+          A:{ text:'Hago mapas conceptuales, dibujos o esquemas.', key:'visual' },
+          B:{ text:'Explico la materia en voz alta o escucho a alguien.', key:'auditiva' },
+          C:{ text:'Leo y resumo mis apuntes.', key:'lectura' },
+          D:{ text:'Practico con ejercicios o ejemplos.', key:'practica' } } },
       { q:'Cuando alguien te explica cómo llegar a un lugar…', opts:{
-          A:'Necesito ver un mapa.',
-          B:'Prefiero que me indiquen el camino hablando.',
-          C:'Prefiero que me escriban las indicaciones.',
-          D:'Prefiero ir siguiendo el camino y descubrirlo.' } },
+          A:{ text:'Necesito ver un mapa.', key:'visual' },
+          B:{ text:'Prefiero que me indiquen el camino hablando.', key:'auditiva' },
+          C:{ text:'Prefiero que me escriban las indicaciones.', key:'lectura' },
+          D:{ text:'Prefiero ir siguiendo el camino y descubrirlo.', key:'practica' } } },
       { q:'Si tienes que recordar algo importante…', opts:{
-          A:'Lo recuerdo mejor si lo visualizo.',
-          B:'Lo repito o lo digo en voz alta.',
-          C:'Lo escribo varias veces.',
-          D:'Lo relaciono con una experiencia o acción.' } },
+          A:{ text:'Lo recuerdo mejor si lo visualizo.', key:'visual' },
+          B:{ text:'Lo repito o lo digo en voz alta.', key:'auditiva' },
+          C:{ text:'Lo escribo varias veces.', key:'lectura' },
+          D:{ text:'Lo relaciono con una experiencia o acción.', key:'practica' } } },
       { q:'En una clase, ¿qué te ayuda más?', opts:{
-          A:'Presentaciones, imágenes y videos.',
-          B:'Explicaciones y conversaciones.',
-          C:'Textos, guías y apuntes.',
-          D:'Actividades, experimentos o ejercicios.' } },
+          A:{ text:'Presentaciones, imágenes y videos.', key:'visual' },
+          B:{ text:'Explicaciones y conversaciones.', key:'auditiva' },
+          C:{ text:'Textos, guías y apuntes.', key:'lectura' },
+          D:{ text:'Actividades, experimentos o ejercicios.', key:'practica' } } },
       { q:'Cuando tienes que resolver un problema…', opts:{
-          A:'Hago un dibujo o esquema para entenderlo.',
-          B:'Lo converso con alguien.',
-          C:'Busco información y la leo.',
-          D:'Intento distintas soluciones hasta encontrar una.' } },
+          A:{ text:'Hago un dibujo o esquema para entenderlo.', key:'visual' },
+          B:{ text:'Lo converso con alguien.', key:'auditiva' },
+          C:{ text:'Busco información y la leo.', key:'lectura' },
+          D:{ text:'Intento distintas soluciones hasta encontrar una.', key:'practica' } } },
       { q:'Si comienzas una nueva actividad…', opts:{
-          A:'Primero observo cómo se hace.',
-          B:'Escucho las instrucciones.',
-          C:'Leo las instrucciones.',
-          D:'¡Prefiero empezar a hacerlo!' } },
+          A:{ text:'Primero observo cómo se hace.', key:'visual' },
+          B:{ text:'Escucho las instrucciones.', key:'auditiva' },
+          C:{ text:'Leo las instrucciones.', key:'lectura' },
+          D:{ text:'¡Prefiero empezar a hacerlo!', key:'practica' } } },
       { q:'Imagínate entrando a la universidad. ¿Qué te gustaría encontrar en una clase?', opts:{
-          A:'Videos, imágenes y presentaciones dinámicas.',
-          B:'Conversaciones, debates y explicaciones.',
-          C:'Lecturas, documentos y material para estudiar.',
-          D:'Talleres, proyectos y actividades prácticas.' } },
+          A:{ text:'Videos, imágenes y presentaciones dinámicas.', key:'visual' },
+          B:{ text:'Conversaciones, debates y explicaciones.', key:'auditiva' },
+          C:{ text:'Lecturas, documentos y material para estudiar.', key:'lectura' },
+          D:{ text:'Talleres, proyectos y actividades prácticas.', key:'practica' } } },
     ],
     results: {
-      A: { title:'Visual', headline:'¡Tu mente piensa en imágenes!',
-           desc:'Puedes disfrutar especialmente de esquemas, mapas conceptuales, gráficos, videos y recursos visuales para organizar información.',
-           tip:'Prueba transformar tus apuntes en esquemas o mapas.',
-           challenge:'¡Explica algo que aprendiste utilizando solo un dibujo!' },
-      B: { title:'Auditiva', headline:'¡Aprendes conversando y escuchando!',
-           desc:'Las explicaciones, conversaciones, debates y repetir información en voz alta pueden ayudarte a organizar tus ideas.',
-           tip:'Prueba estudiar explicándole la materia a otra persona.',
-           challenge:'¡Explica un tema en 30 segundos!' },
-      C: { title:'Lectura/Escritura', headline:'¡Las palabras son tu herramienta!',
-           desc:'Puedes sentirte cómodo/a leyendo, escribiendo, tomando apuntes y organizando información.',
-           tip:'Prueba hacer resúmenes, listas de conceptos y preguntas de estudio.',
-           challenge:'¡Resume algo que aprendiste en 3 frases!' },
-      D: { title:'Práctica/Experiencial', headline:'¡Aprendes haciendo!',
-           desc:'Experimentar, practicar, moverte, resolver problemas y participar activamente puede ayudarte a comprender mejor.',
-           tip:'Busca ejercicios, simulaciones, proyectos y ejemplos prácticos.',
-           challenge:'¡Representa una profesión sin hablar!' },
+      visual: { title:'Visual', headline:'¡Tu mente piensa en imágenes!',
+        desc:'Puedes disfrutar especialmente de esquemas, mapas conceptuales, gráficos, videos y recursos visuales para organizar información.',
+        tip:'Prueba transformar tus apuntes en esquemas o mapas.',
+        challenge:'¡Explica algo que aprendiste utilizando solo un dibujo!' },
+      auditiva: { title:'Auditiva', headline:'¡Aprendes conversando y escuchando!',
+        desc:'Las explicaciones, conversaciones, debates y repetir información en voz alta pueden ayudarte a organizar tus ideas.',
+        tip:'Prueba estudiar explicándole la materia a otra persona.',
+        challenge:'¡Explica un tema en 30 segundos!' },
+      lectura: { title:'Lectura/Escritura', headline:'¡Las palabras son tu herramienta!',
+        desc:'Puedes sentirte cómodo/a leyendo, escribiendo, tomando apuntes y organizando información.',
+        tip:'Prueba hacer resúmenes, listas de conceptos y preguntas de estudio.',
+        challenge:'¡Resume algo que aprendiste en 3 frases!' },
+      practica: { title:'Práctica/Experiencial', headline:'¡Aprendes haciendo!',
+        desc:'Experimentar, practicar, moverte, resolver problemas y participar activamente puede ayudarte a comprender mejor.',
+        tip:'Busca ejercicios, simulaciones, proyectos y ejemplos prácticos.',
+        challenge:'¡Representa una profesión sin hablar!' },
     }
   },
 
-  habitos: {
+  /* ---------------- QUIZ 2: Inteligencias múltiples ---------------- */
+  inteligencias: {
     accentClass: 'quiz-teal',
-    icon: '🌱',
-    title: '¿Qué tipo de autocuidado necesitas?',
+    icon: '🌟',
+    title: '¿Cuál es tu tipo de inteligencia?',
     subtitle: 'Trivia',
-    intro: 'No hay respuestas correctas o incorrectas. Elige la alternativa que más se parezca a ti.',
+    intro: 'Elige solo una alternativa en cada pregunta. No hay respuestas correctas o incorrectas.',
     categories: {
-      A: { icon:'🗓️' },
-      B: { icon:'🏃' },
-      C: { icon:'🤝' },
-      D: { icon:'🌙' }
+      linguistica:    { icon:'🗣️', name:'Lingüística' },
+      logica:         { icon:'🔢', name:'Lógico-matemática' },
+      visual:         { icon:'🎨', name:'Visual-espacial' },
+      corporal:       { icon:'🤸', name:'Corporal-cinestésica' },
+      musical:        { icon:'🎵', name:'Musical' },
+      interpersonal:  { icon:'🤝', name:'Interpersonal' },
+      intrapersonal:  { icon:'🌱', name:'Intrapersonal' },
+      naturalista:    { icon:'🌎', name:'Naturalista' },
     },
+    categoryOrder: ['linguistica','logica','visual','corporal','musical','interpersonal','intrapersonal','naturalista'],
     questions: [
-      { q:'Cuando sientes que tienes mucho que hacer…', opts:{
-          A:'Hago una lista o planifico mis tiempos.',
-          B:'Salgo a caminar o me muevo para despejarme.',
-          C:'Hablo con alguien para ordenar mis ideas.',
-          D:'Me tomo una pausa antes de seguir.' } },
-      { q:'Antes de un día importante (prueba, entrevista, evento)…', opts:{
-          A:'Preparo todo con anticipación y reviso mi horario.',
-          B:'Hago algo de actividad física para liberar tensión.',
-          C:'Converso con alguien de confianza sobre cómo me siento.',
-          D:'Trato de dormir bien y descansar la mente.' } },
-      { q:'Cuando terminas una semana agotadora…', opts:{
-          A:'Ordeno mis pendientes para la próxima semana.',
-          B:'Necesito moverme, salir o hacer deporte.',
-          C:'Junto a mis amigos/as o familia para desconectar.',
-          D:'Prefiero un momento tranquilo, solo/a y en silencio.' } },
-      { q:'Si algo no sale como esperabas…', opts:{
-          A:'Reorganizo mis planes y sigo adelante.',
-          B:'Necesito liberar energía moviéndome.',
-          C:'Busco apoyo o consejo en otras personas.',
-          D:'Necesito tiempo para procesarlo con calma.' } },
-      { q:'¿Qué rutina te cuesta más mantener?', opts:{
-          A:'Organizar mi tiempo y mis tareas.',
-          B:'Hacer actividad física con regularidad.',
-          C:'Mantenerme en contacto con otras personas.',
-          D:'Dormir bien y tomarme pausas.' } },
-      { q:'Un buen día para ti incluye…', opts:{
-          A:'Cumplir con lo que planifiqué.',
-          B:'Moverme, entrenar o estar activo/a.',
-          C:'Compartir tiempo con personas que quiero.',
-          D:'Tener momentos de calma y descanso.' } },
-      { q:'Cuando llegues a la universidad, ¿qué crees que más cuidarás de ti?', opts:{
-          A:'Mi organización y planificación de estudio.',
-          B:'Mi actividad física y energía.',
-          C:'Mis redes de apoyo y amistades.',
-          D:'Mi descanso y mis pausas.' } },
-      { q:'Si tuvieras que elegir un solo hábito para empezar hoy…', opts:{
-          A:'Armar una agenda o lista de tareas.',
-          B:'Moverme más durante el día.',
-          C:'Hablar más con las personas de mi entorno.',
-          D:'Dormir mejor y descansar más.' } },
+      { q:'Cuando tienes que aprender algo nuevo, prefieres…', opts:{
+          A:{ text:'Leerlo, explicarlo o conversarlo. 🗣️', key:'linguistica' },
+          B:{ text:'Resolver ejercicios o descubrir cómo funciona. 🔢', key:'logica' },
+          C:{ text:'Ver imágenes, mapas o hacer un esquema. 🎨', key:'visual' },
+          D:{ text:'Practicarlo directamente, haciendo o moviéndote. 🤸', key:'corporal' } } },
+      { q:'Si tienes una tarde libre, probablemente…', opts:{
+          A:{ text:'Escucho música o descubro canciones nuevas. 🎵', key:'musical' },
+          B:{ text:'Salgo con amigos o hago algo con otras personas. 🤝', key:'interpersonal' },
+          C:{ text:'Me quedo pensando en mis cosas, metas o planes. 🌱', key:'intrapersonal' },
+          D:{ text:'Salgo a caminar, estar al aire libre o conectarme con la naturaleza. 🌎', key:'naturalista' } } },
+      { q:'En un trabajo grupal, normalmente eres quien…', opts:{
+          A:{ text:'Explica las ideas o prepara la presentación. 🗣️', key:'linguistica' },
+          B:{ text:'Organiza la información y encuentra soluciones. 🔢', key:'logica' },
+          C:{ text:'Se preocupa de que todo se vea atractivo. 🎨', key:'visual' },
+          D:{ text:'Motiva al grupo y ayuda a que todos participen. 🤝', key:'interpersonal' } } },
+      { q:'¿Cuál de estas actividades te llamaría más la atención?', opts:{
+          A:{ text:'Crear una canción o aprender un instrumento. 🎵', key:'musical' },
+          B:{ text:'Practicar un deporte, baile o actividad física. 🤸', key:'corporal' },
+          C:{ text:'Dibujar, diseñar o crear contenido visual. 🎨', key:'visual' },
+          D:{ text:'Investigar sobre animales, plantas o el medioambiente. 🌎', key:'naturalista' } } },
+      { q:'Cuando tienes un problema, generalmente…', opts:{
+          A:{ text:'Lo pienso y trato de entender qué estoy sintiendo. 🌱', key:'intrapersonal' },
+          B:{ text:'Busco una solución lógica paso a paso. 🔢', key:'logica' },
+          C:{ text:'Converso con alguien y escucho diferentes opiniones. 🤝', key:'interpersonal' },
+          D:{ text:'Lo explico hablando o escribiendo para ordenar mis ideas. 🗣️', key:'linguistica' } } },
+      { q:'¿Qué actividad elegirías para una feria?', opts:{
+          A:{ text:'Resolver un misterio o desafío. 🔢', key:'logica' },
+          B:{ text:'Hacer una presentación frente a otros. 🗣️', key:'linguistica' },
+          C:{ text:'Crear un afiche, video o diseño. 🎨', key:'visual' },
+          D:{ text:'Hacer una actividad relacionada con música. 🎵', key:'musical' } } },
+      { q:'¿Qué te describe mejor?', opts:{
+          A:{ text:'Aprendo mejor cuando puedo experimentar y hacer cosas. 🤸', key:'corporal' },
+          B:{ text:'Me interesa entender cómo funcionan las personas y sus relaciones. 🤝', key:'interpersonal' },
+          C:{ text:'Suelo reflexionar bastante sobre quién soy y qué quiero. 🌱', key:'intrapersonal' },
+          D:{ text:'Me fijo mucho en los animales, plantas, paisajes y entorno. 🌎', key:'naturalista' } } },
+      { q:'Si pudieras elegir un proyecto para realizar, escogerías…', opts:{
+          A:{ text:'Crear una historia, podcast o presentación. 🗣️', key:'linguistica' },
+          B:{ text:'Resolver un desafío utilizando datos o estrategias. 🔢', key:'logica' },
+          C:{ text:'Diseñar un espacio, afiche o videojuego. 🎨', key:'visual' },
+          D:{ text:'Crear una actividad para ayudar a otras personas. 🤝', key:'interpersonal' } } },
     ],
     results: {
-      A: { title:'Organización', desc:'Te cuidas ordenando tu tiempo y tus tareas. La estructura y la planificación te dan tranquilidad.',
-           uni:'Usa una agenda o app de tareas, prioriza y divide los trabajos grandes en pasos pequeños. Te va a ayudar a evitar el estrés de último minuto.' },
-      B: { title:'Movimiento y energía', desc:'Te cuidas moviéndote. La actividad física es tu forma de liberar tensión y recargar energía.',
-           uni:'Busca espacios para moverte entre clases: caminar, entrenar, estirarte. Tu cuerpo activo también ayuda a tu concentración.' },
-      C: { title:'Conexión', desc:'Te cuidas conectando con otras personas. Hablar y compartir es tu forma de procesar lo que vives.',
-           uni:'Construye tus redes de apoyo desde el primer semestre: compañeros, grupos de estudio, amistades. No tienes que pasar esta etapa solo/a.' },
-      D: { title:'Calma y descanso', desc:'Te cuidas dándote espacio para descansar y procesar las cosas con calma.',
-           uni:'Prioriza tu sueño y tus pausas, especialmente en época de pruebas. Aprender a parar también es parte de rendir bien.' },
+      linguistica: { title:'Lingüística', headline:'¡Las palabras son tu fuerte!',
+        desc:'Te resulta fácil expresarte, explicar ideas y comunicarte, ya sea hablando o escribiendo.',
+        tip:'Explica lo que aprendes en voz alta o escribe resúmenes con tus propias palabras.',
+        challenge:'¡Cuenta en 30 segundos algo que aprendiste hoy!' },
+      logica: { title:'Lógico-matemática', headline:'¡Piensas en patrones y soluciones!',
+        desc:'Te gusta razonar, resolver problemas paso a paso y entender cómo funcionan las cosas.',
+        tip:'Busca ejercicios, acertijos o desafíos lógicos para poner a prueba tus ideas.',
+        challenge:'¡Resuelve un acertijo o desafío lógico ahora mismo!' },
+      visual: { title:'Visual-espacial', headline:'¡Ves el mundo en imágenes!',
+        desc:'Disfrutas crear, diseñar y organizar información de forma visual: dibujos, mapas, esquemas.',
+        tip:'Transforma tus apuntes en esquemas, diagramas o mapas visuales.',
+        challenge:'¡Dibuja algo que represente cómo te sientes hoy!' },
+      corporal: { title:'Corporal-cinestésica', headline:'¡Aprendes con el cuerpo en movimiento!',
+        desc:'Te gusta experimentar, moverte y aprender haciendo, más que solo escuchando o leyendo.',
+        tip:'Busca actividades prácticas, talleres o proyectos donde puedas moverte y crear.',
+        challenge:'¡Haz un gesto o movimiento que represente lo que sientes ahora!' },
+      musical: { title:'Musical', headline:'¡La música conecta contigo!',
+        desc:'Tienes sensibilidad para los sonidos, ritmos y melodías; la música te ayuda a expresarte y concentrarte.',
+        tip:'Prueba estudiar con música instrumental o crea una melodía para recordar contenidos.',
+        challenge:'¡Tararea una melodía que represente tu estado de ánimo!' },
+      interpersonal: { title:'Interpersonal', headline:'¡Te conectas fácilmente con otras personas!',
+        desc:'Entiendes bien a los demás, trabajas bien en equipo y disfrutas ayudar y colaborar.',
+        tip:'Aprovecha los trabajos grupales y arma redes de apoyo desde el primer semestre.',
+        challenge:'¡Pregúntale a alguien cómo está y escúchalo de verdad!' },
+      intrapersonal: { title:'Intrapersonal', headline:'¡Te conoces bien a ti mismo/a!',
+        desc:'Te gusta reflexionar sobre tus metas, emociones y decisiones antes de actuar.',
+        tip:'Date espacios para pensar en lo que realmente quieres antes de decidir tu camino.',
+        challenge:'¡Escribe una meta que tengas para este año!' },
+      naturalista: { title:'Naturalista', headline:'¡Conectas con el entorno natural!',
+        desc:'Te interesan los animales, las plantas y el medioambiente; observas y comprendes bien la naturaleza.',
+        tip:'Busca espacios al aire libre, ramos o actividades ligadas al medioambiente.',
+        challenge:'¡Sal y observa algo de la naturaleza por un minuto!' },
     }
   }
 };
@@ -164,7 +202,6 @@ const quizzes = {
 let currentQuiz = null;
 let currentIndex = 0;
 let answers = [];
-const LETTERS = ['A','B','C','D'];
 
 function openQuiz(key){
   currentQuiz = key;
@@ -211,11 +248,12 @@ function renderQuestion(){
   let opts = '<div class="options">';
   LETTERS.forEach(letter=>{
     const sel = answers[currentIndex]===letter ? 'selected' : '';
-    const cat = data.categories[letter];
+    const opt = q.opts[letter];
+    const cat = data.categories[opt.key];
     opts += `<button class="opt ${sel}" onclick="selectOpt('${letter}')">
       <span class="opt-letter">${letter}</span>
       <span class="opt-icon">${cat.icon}</span>
-      <span class="opt-text">${q.opts[letter]}</span>
+      <span class="opt-text">${opt.text}</span>
     </button>`;
   });
   opts += '</div>';
@@ -254,55 +292,45 @@ function nextQuestion(){
 
 function renderResult(){
   const data = quizzes[currentQuiz];
+  const order = data.categoryOrder;
 
-  const tally = {A:0,B:0,C:0,D:0};
-  answers.forEach(letter => tally[letter]++);
+  const tally = {};
+  order.forEach(key => tally[key] = 0);
+  answers.forEach((letter, i) => {
+    const key = data.questions[i].opts[letter].key;
+    tally[key]++;
+  });
 
-  let winner = 'A';
-  LETTERS.forEach(letter=>{ if(tally[letter] > tally[winner]) winner = letter; });
+  let winner = order[0];
+  order.forEach(key => { if(tally[key] > tally[winner]) winner = key; });
 
   const result = data.results[winner];
   const cat = data.categories[winner];
   const total = data.questions.length;
 
   let barsHtml = '<div class="profile-bars">';
-  LETTERS.forEach(letter=>{
-    const pct = Math.round((tally[letter]/total)*100);
-    const isWinner = letter === winner ? 'is-winner' : '';
+  order.forEach(key=>{
+    const pct = Math.round((tally[key]/total)*100);
+    const isWinner = key === winner ? 'is-winner' : '';
     barsHtml += `
       <div class="profile-bar-row ${isWinner}">
-        <span class="pb-icon">${data.categories[letter].icon}</span>
+        <span class="pb-icon">${data.categories[key].icon}</span>
         <div class="profile-bar-track"><div class="profile-bar-fill" style="width:${pct}%"></div></div>
-        <span class="pb-count">${tally[letter]}</span>
+        <span class="pb-count">${tally[key]}</span>
       </div>`;
   });
   barsHtml += '</div>';
 
-  const hasRichFormat = !!result.headline;
-
-  let bodyHtml;
-  if(hasRichFormat){
-    bodyHtml = `
+  document.getElementById('quizBody').innerHTML = `
+    <div class="result">
+      <div class="badge">${cat.icon}</div>
+      <span class="result-tag">Tu resultado</span>
+      <h3>${result.title}</h3>
       <p class="result-headline">${result.headline}</p>
       <p class="lead">${result.desc}</p>
       ${barsHtml}
       <div class="tip-box"><b>💡 Para la universidad</b>${result.tip}</div>
       <div class="challenge-box"><b>🎯 Tu desafío</b>${result.challenge}</div>
-    `;
-  } else {
-    bodyHtml = `
-      <p class="lead">${result.desc}</p>
-      ${barsHtml}
-      <div class="uni-connect"><b>🎓 En la universidad:</b> ${result.uni}</div>
-    `;
-  }
-
-  document.getElementById('quizBody').innerHTML = `
-    <div class="result">
-      <div class="badge">${cat.icon}</div>
-      <span class="result-tag">Tu preferencia</span>
-      <h3>${result.title}</h3>
-      ${bodyHtml}
       <div class="stand-cta">¿Quieres profundizar en esto? <b>Acércate a nuestro stand COSAM</b> — estamos para escucharte y acompañarte en cada paso.</div>
       <button class="retry-btn" onclick="openQuiz('${currentQuiz}')">Responder de nuevo</button>
     </div>
