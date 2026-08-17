@@ -1,0 +1,91 @@
+ Trivia: “¿Cómo aprendes mejor?”
+
+
+👀 Visual
+👂 Auditiva
+📖 Lectura/Escritura
+🤸 Práctica/Experiencial
+
+Al final aparece una tarjeta personalizada con su resultado y una pequeña conexión con la vida universitaria.
+
+🎮 Cómo funciona
+
+Pantalla inicial:
+
+🧠 ¿CÓMO APRENDES MEJOR?
+
+No hay respuestas correctas o incorrectas.
+Elige la alternativa que más se parezca a ti.
+
+1. Cuando tienes que aprender algo nuevo…
+
+A. 👀 Prefiero ver imágenes, esquemas o videos.
+B. 👂 Prefiero que alguien me lo explique.
+C. 📖 Prefiero leer la información.
+D. 🤸 Prefiero probarlo y aprender mientras lo hago.
+
+2. Antes de una prueba importante, normalmente…
+
+A. 👀 Hago mapas conceptuales, dibujos o esquemas.
+B. 👂 Explico la materia en voz alta o escucho a alguien.
+C. 📖 Leo y resumo mis apuntes.
+D. 🤸 Practico con ejercicios o ejemplos.
+
+3. Cuando alguien te explica cómo llegar a un lugar…
+
+A. 👀 Necesito ver un mapa.
+B. 👂 Prefiero que me indiquen el camino hablando.
+C. 📖 Prefiero que me escriban las indicaciones.
+D. 🤸 Prefiero ir siguiendo el camino y descubrirlo.
+
+4. Si tienes que recordar algo importante…
+
+A. 👀 Lo recuerdo mejor si lo visualizo.
+B. 👂 Lo repito o lo digo en voz alta.
+C. 📖 Lo escribo varias veces.
+D. 🤸 Lo relaciono con una experiencia o acción.
+
+5. En una clase, ¿qué te ayuda más?
+
+A. 👀 Presentaciones, imágenes y videos.
+B. 👂 Explicaciones y conversaciones.
+C. 📖 Textos, guías y apuntes.
+D. 🤸 Actividades, experimentos o ejercicios.
+
+6. Cuando tienes que resolver un problema…
+
+A. 👀 Hago un dibujo o esquema para entenderlo.
+B. 👂 Lo converso con alguien.
+C. 📖 Busco información y la leo.
+D. 🤸 Intento distintas soluciones hasta encontrar una.
+
+7. Si comienzas una nueva actividad…
+
+A. 👀 Primero observo cómo se hace.
+B. 👂 Escucho las instrucciones.
+C. 📖 Leo las instrucciones.
+D. 🤸 ¡Prefiero empezar a hacerlo!
+
+8. Imagínate entrando a la universidad. ¿Qué te gustaría encontrar en una clase?
+
+A. 👀 Videos, imágenes y presentaciones dinámicas.
+B. 👂 Conversaciones, debates y explicaciones.
+C. 📖 Lecturas, documentos y material para estudiar.
+D. 🤸 Talleres, proyectos y actividades prácticas.
+
+🏆 ¿Cómo se obtiene el resultado?
+
+Cada respuesta suma un punto:
+
+Respuesta	Preferencia
+A 👀	Visual
+B 👂	Auditiva
+C 📖	Lectura/Escritura
+D 🤸	Práctica/Experiencial
+
+Al terminar las 8 preguntas:
+
+Mayor cantidad de A → VISUAL
+Mayor cantidad de B → AUDITIVA
+Mayor cantidad de C → LECTURA/ESCRITURA
+Mayor cantidad de D → PRÁCTICA/EXPERIENCIAL
