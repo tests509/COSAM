@@ -1,17 +1,51 @@
-/* ---------------- Infographic modal ---------------- */
-const images = {
-  salud:   { src: 'assets/img/infografia-salud-mental.jpg', title: 'Cuida tu mente, construye tu futuro' },
-  habitos: { src: 'assets/img/infografia-habitos.jpg',       title: 'Rutinas y buenos hábitos, mejor bienestar' }
-};
-
 function lockScroll(){ document.body.style.overflow = 'hidden'; }
 function unlockScroll(){ document.body.style.overflow = ''; }
 
+/* ---------------- Infographic / guide modal ---------------- */
+const images = {
+  salud:   { pages:[{ src:'assets/img/infografia-salud-mental.jpg', label:'Infografía' }], title:'Cuida tu mente, construye tu futuro' },
+  habitos: { pages:[{ src:'assets/img/infografia-habitos.jpg', label:'Infografía' }], title:'Rutinas y buenos hábitos, mejor bienestar' },
+  guia: {
+    title:'Guía Redes de Apoyo en Salud Mental',
+    pages:[
+      { src:'assets/img/guia-triptico-contactos.jpg', label:'📞 Líneas y urgencias' },
+      { src:'assets/img/guia-triptico-salud.jpg',      label:'🏥 Salud y seguridad' },
+    ]
+  }
+};
+
+let currentImgKey = null;
+let currentPage = 0;
+
 function openImage(key){
-  document.getElementById('imgTarget').src = images[key].src;
+  currentImgKey = key;
+  currentPage = 0;
   document.getElementById('imgTitle').textContent = images[key].title;
+  renderImagePage();
   document.getElementById('imgOverlay').classList.add('open');
   lockScroll();
+}
+
+function renderImagePage(){
+  const data = images[currentImgKey];
+  const page = data.pages[currentPage];
+  document.getElementById('imgTarget').src = page.src;
+
+  const tabsEl = document.getElementById('imgTabs');
+  if(data.pages.length > 1){
+    tabsEl.style.display = 'flex';
+    tabsEl.innerHTML = data.pages.map((p, i) =>
+      `<button class="img-tab ${i===currentPage?'active':''}" onclick="switchImagePage(${i})">${p.label}</button>`
+    ).join('');
+  } else {
+    tabsEl.style.display = 'none';
+    tabsEl.innerHTML = '';
+  }
+}
+
+function switchImagePage(i){
+  currentPage = i;
+  renderImagePage();
 }
 
 /* ---------------- Trivia data ----------------

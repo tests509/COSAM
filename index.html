@@ -24,8 +24,8 @@
 </header>
 
 <section class="hero">
-  <h1>Tu futuro <em>también se construye </em>,<br>desde el bienestar</h1>
-  <p>Conócete, cuídate y construye tu camino.</p>
+  <h1>Cuida tu <em>mente</em>,<br>construye tu futuro</h1>
+  <p>Un espacio para conocerte mejor antes de dar el gran salto a la universidad. Responde un quiz breve o explora nuestras infografías.</p>
   <div class="hero-pill"><span class="dot"></span> Actividad interactiva del stand COSAM</div>
 </section>
 
@@ -88,6 +88,24 @@
       </span>
     </button>
   </div>
+
+  <div class="section-label">
+    <h2>Llévatela contigo</h2>
+    <div class="rule"></div>
+    <span class="tag guide">Guía de contactos</span>
+  </div>
+  <div class="grid grid-single">
+    <button class="card card-featured" onclick="openImage('guia')">
+      <span class="stripe"></span>
+      <span class="meta">Tríptico · 2 caras</span>
+      <div class="card-icon">🆘</div>
+      <h3>Guía Redes de Apoyo en Salud Mental</h3>
+      <p>Tu mapa de contactos de emergencia: chats y líneas 24/7, servicios de urgencia, salud en Cerrillos y orientación en seguridad y derechos.</p>
+      <span class="cta">Ver guía completa
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </button>
+  </div>
 </div>
 
 <footer>
@@ -101,6 +119,7 @@
       <h4 id="imgTitle">Infografía</h4>
       <button class="close-btn" onclick="closeModal('imgOverlay')">✕</button>
     </div>
+    <div class="img-tabs" id="imgTabs"></div>
     <div class="modal-img-body">
       <img id="imgTarget" src="" alt="Infografía COSAM">
     </div>
