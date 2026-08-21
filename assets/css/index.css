@@ -155,6 +155,7 @@
   .card.c-teal .stripe{background:var(--teal);}
   .card.c-coral .stripe{background:var(--coral);}
   .card.c-gold .stripe{background:var(--gold);}
+  .card.c-navy .stripe{background:var(--navy);}
 
   .card-icon{
     width:48px;height:48px;border-radius:14px;
@@ -165,6 +166,7 @@
   .card.c-teal .card-icon{background:#E4F4F2;}
   .card.c-coral .card-icon{background:#FCE9EC;}
   .card.c-gold .card-icon{background:#FDF1DD;}
+  .card.c-navy .card-icon{background:#E7EAF2;}
 
   .card h3{
     font-family:'Fredoka',sans-serif;font-weight:600;
@@ -183,6 +185,7 @@
   .card.c-teal .cta{background:var(--teal);}
   .card.c-coral .cta{background:var(--coral);}
   .card.c-gold .cta{background:var(--gold);}
+  .card.c-navy .cta{background:var(--navy);}
   .card .cta svg{width:14px;height:14px;transition:transform .2s;}
   .card:active .cta svg{transform:translateX(3px);}
 
@@ -202,21 +205,6 @@
     .card .meta{top:26px;right:26px;font-size:11px;letter-spacing:.06em;}
   }
 
-  /* ---------- Featured card (Guía de contactos) ---------- */
-  .card-featured{
-    background:linear-gradient(135deg, var(--navy) 0%, #223559 100%);
-    color:#fff;
-  }
-  .card-featured .stripe{background:var(--gold);width:6px;}
-  .card-featured .card-icon{background:rgba(255,255,255,0.12);}
-  .card-featured h3{color:#fff;}
-  .card-featured p{color:#c4cadb;}
-  .card-featured .meta{color:#8f9ac2;}
-  .card-featured .cta{background:var(--gold);color:var(--navy);font-weight:600;}
-  .card-featured:active{transform:scale(.98);}
-  @media(min-width:640px){
-    .card-featured:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(22,35,63,0.35);}
-  }
 
   /* ---------- Footer ---------- */
   footer{
