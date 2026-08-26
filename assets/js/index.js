@@ -110,7 +110,7 @@ const quizzes = {
           B:{ text:'Escucho las instrucciones.', key:'auditiva' },
           C:{ text:'Leo las instrucciones.', key:'lectura' },
           D:{ text:'¡Prefiero empezar a hacerlo!', key:'practica' } } },
-      { q:'Imagínate entrando a la universidad. ¿Qué te gustaría encontrar en una clase?', opts:{
+      { q:'Imagínate entrando a la eduación superior. ¿Qué te gustaría encontrar en una clase?', opts:{
           A:{ text:'Videos, imágenes y presentaciones dinámicas.', key:'visual' },
           B:{ text:'Conversaciones, debates y explicaciones.', key:'auditiva' },
           C:{ text:'Lecturas, documentos y material para estudiar.', key:'lectura' },
@@ -363,7 +363,7 @@ function renderResult(){
       <p class="result-headline">${result.headline}</p>
       <p class="lead">${result.desc}</p>
       ${barsHtml}
-      <div class="tip-box"><b>💡 Para la universidad</b>${result.tip}</div>
+      <div class="tip-box"><b>💡 Para la eduación superior</b>${result.tip}</div>
       <div class="challenge-box"><b>🎯 Tu desafío</b>${result.challenge}</div>
       <div class="stand-cta">¿Quieres profundizar en esto? <b>Acércate a nuestro stand COSAM</b> — estamos para escucharte y acompañarte en cada paso.</div>
       <button class="retry-btn" onclick="openQuiz('${currentQuiz}')">Responder de nuevo</button>
