@@ -3,8 +3,8 @@ function unlockScroll(){ document.body.style.overflow = ''; }
 
 /* ---------------- Infographic / guide modal ---------------- */
 const images = {
-  salud:   { pages:[{ src:'assets/img/infografia-salud-mental.jpg', label:'Infografía' }], title:'Cuida tu mente, construye tu futuro' },
-  habitos: { pages:[{ src:'assets/img/infografia-habitos.jpg', label:'Infografía' }], title:'Rutinas y buenos hábitos, mejor bienestar' },
+  salud:   { pages:[{ src:'assets/img/infografia-salud-mental1.jpg', label:'Infografía' }], title:'Cuida tu mente, construye tu futuro' },
+  habitos: { pages:[{ src:'assets/img/infografia-habitos1.jpg', label:'Infografía' }], title:'Rutinas y buenos hábitos, mejor bienestar' },
   guia: {
     title:'Guía Redes de Apoyo en Salud Mental',
     pages:[
